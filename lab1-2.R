@@ -1,6 +1,7 @@
 y <-seq(from= 0.1, to = 3, by= 0.1)
-
+set.seed(12345) 
 #2 och 3
+
 logl<-function(machines,y){
   r = numeric(30)
   r2 = numeric(30)
@@ -25,11 +26,19 @@ logl(machines,y)
 bay<-function(machines,y){
   r3 = numeric(30)
   for(i in 1:30){
-    r3[i] = log((y[i]*exp(-y[i]*sum(machines))* (10*exp(-10*y[i])))) #Osäker på det här specielt på om x ska vara sum(machines) 
+    r3[i] = ((y[i]^dim(machines)[1])*exp(-y[i] *sum(machines)))*((10^dim(machines)[1])*exp(-10*sum(machines)))      
   }
-  
   
   plot(y,r3)
 }
+#bay(machines,y)
+#5
 
-bay(machines,y)
+newObs<-function(machines){
+  newdata<-rexp(n = 50, rate = 1.1)
+  hist(newdata)
+  hist(machines[,1])
+  
+}
+#newObs(machines)
+
