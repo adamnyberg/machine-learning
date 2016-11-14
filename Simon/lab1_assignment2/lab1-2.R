@@ -1,5 +1,7 @@
 setwd("/Users/Simon/Documents/TDDE01/tdde01/Simon/lab1_assignment2")
 data <- read.csv("machines.csv")
+set.seed(12345) 
+
 
 
 log_likelihood=function(lambdas){
@@ -16,16 +18,35 @@ log_likelihood=function(lambdas){
     i = i + 1
   }
   print(res_first_six)
-  best_theta = y[which(logl==max(logl))]
-  plot(y,res, col = 'blue', ylim=range(res[-1],res_first_six[-1]))
-  points(y,res_first_six, col = 'red')
+  best_theta = lambdas[which(res==max(res))]
+  plot(lambdas,res, col = 'blue', ylim=range(res[-1],res_first_six[-1]))
+  points(lambdas,res_first_six, col = 'red')
 }
 
-bayesian=function(){
-  
+bayesian=function(lambdas){
+  n = length(data[,1])
+  machines_sum = sum(data)
+  res=c(1,length(y))
+  i = 1
+  for(lambda in lambdas){
+    res[i] = (lambda^n)*exp(-lambda*machines_sum)
+    i = i + 1
+  }
+  best_theta = lambdas[which(res==max(res))]
+  plot(lambdas,res)
+}
+
+obs=function(){
+  n = 50;
+  theta = 1.1
+  exp_dist = rexp(n, rate = theta)
+  hist(exp_dist)
 }
 
 
 
 y = seq(0,3,0.1)
-log_likelihood(y)
+#log_likelihood(y)
+#bayesian(y)
+#hist(data[,1])
+obs()

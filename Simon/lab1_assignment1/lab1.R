@@ -1,4 +1,5 @@
 library(kknn)
+setwd("/Users/Simon/Documents/TDDE01/tdde01/Simon/lab1_assignment1")
 data <- read.csv("spambase.csv")
 
 c_func=function(X,Y){
@@ -97,7 +98,8 @@ test$Spam = NULL;
 prediction = predict(result)
 #confusion_matrix(prediction)
 #misclass_rate(prediction)
-plot_ROC(prediction)
+#plot_ROC(prediction)
+plot_ROC(knearest(train,5,test))
 
 
 
