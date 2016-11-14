@@ -18,9 +18,7 @@ knearest=function(data,K,newdata){
   #i test hitta K närmasta train
   #K min i varje kolumn
   #return antal spam / K
-  #order
 
-  
   dmat = d_func(data,newdata)
   result = c()
   
@@ -40,18 +38,14 @@ knearest=function(data,K,newdata){
 }
 
 confusion_matrix=function(pred_prob) {
-  pred_prob = replace(pred_prob, pred_prob < 0.5, 0)
-  pred_prob = replace(pred_prob, pred_prob >= 0.5, 1)
-  #knearest = rows
-  #spam = cols
-  conf_mat = table(pred_prob == 1, spam_test == 1)
-  
+  pred_spam = replace(pred_spam, pred_spam < 0.5, 0)
+  pred_spam = replace(pred_spam, pred_spam >= 0.5, 1)
+  conf_mat = table(pred_spam, spam_test)
   return(conf_mat)
 }
 
 
 misclass_rate=function(pred_prob) {
-  #pred_prob = knearest(data, K, newdata)
   pred_prob = replace(pred_prob, pred_prob < 0.5, 0)
   pred_prob = replace(pred_prob, pred_prob >= 0.5, 1)
   
@@ -76,10 +70,9 @@ plot_ROC=function(pred_prob){
     index = i*20
     TPR[index] = conf_mat[1,1]/sum(conf_mat[1,])
     FPR[index] = conf_mat[2,1]/sum(conf_mat[2,])
-    #print(conf_mat)
   }
   
-  plot(FPR,TPR, type="o")
+  plot(FPR,TPR, type="o", main="ROC curve of our K-NN")
 }
 
 
@@ -96,10 +89,15 @@ train$Spam = NULL;
 test$Spam = NULL;
 
 prediction = predict(result)
-#confusion_matrix(prediction)
+confusion_matrix(prediction)
 #misclass_rate(prediction)
 #plot_ROC(prediction)
 plot_ROC(knearest(train,5,test))
+#misclass_rate(knearest(train,1,test))
+#misclass_rate(knearest(train,5,test))
+#confusion_matrix(knearest(train,1,test))
+#confusion_matrix(knearest(train,5,test))
+
 
 
 
