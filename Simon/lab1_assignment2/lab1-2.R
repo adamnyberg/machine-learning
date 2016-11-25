@@ -7,6 +7,7 @@ log_likelihood=function(thetas){
   n_first_six = 6
   machines_sum = sum(data)
   machines_sum_first_six = sum(data[,1][1:6])
+  
   res=c(1,length(y))
   res_first_six=c(1,length(y))
   i = 1
@@ -15,7 +16,8 @@ log_likelihood=function(thetas){
     res_first_six[i] = n_first_six*log(theta)-theta*machines_sum_first_six
     i = i + 1
   }
-  print(res_first_six)
+  #print(res)
+  
   best_theta = thetas[which(res==max(res))]
   theta = thetas #make output look better
   log_like = res #make output look better
@@ -26,16 +28,21 @@ log_likelihood=function(thetas){
 bayesian=function(thetas){
   n = length(data[,1])
   machines_sum = sum(data)
-  res=c(1,length(y))
+  res=c()
+  new_res=c()
+  #res=c(1,length(y))
   i = 1
   for(theta in thetas){
-    res[i] = (thetas^n)*exp(-theta*machines_sum)*(10^n)*exp(-10*machines_sum)
+    res[i] = (theta^n)*exp(-theta*machines_sum)*(10^n)*exp(-10*machines_sum)
+    new_res[i] = (n*log(theta)-theta*machines_sum)+log(10*exp(-10*theta))
     i = i + 1
   }
-  best_theta = thetas[which(res==max(res))]
-  theta = thetas #make output look better
-  likelihood = res #make output look better
-  plot(theta,likelihood, main = "Bayesian Likelihood")
+  #print(res)
+  #print(new_res)
+  theta = thetas[-1] #make output look better
+  likelihood = new_res[-1] #make output look better
+  best_theta = thetas[which(likelihood==max(likelihood))]
+  plot(theta,likelihood, main = "Bayesian Likelihood", type="l", ylab="Marginal Likelihood")
 }
 
 obs=function(){
@@ -45,9 +52,9 @@ obs=function(){
   hist(exp_dist, main="Histogram of exponential distribution")
 }
 
-y = seq(0,3,0.1)
+y = seq(0,3,0.0001)
 #log_likelihood(y)
-#bayesian(y)
-lifespan = data[,1]
-hist(lifespan, main="Histogram of the original data")
+bayesian(y)
+#lifespan = data[,1]
+#hist(lifespan, main="Histogram of the original data")
 #obs()

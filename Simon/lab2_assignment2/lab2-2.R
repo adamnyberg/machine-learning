@@ -39,7 +39,6 @@ linear_model = function(){
 variable_selection = function(){
   remove = c("Protein", "Moisture", "Sample")
   new_data =  data[, ! names(data) %in% remove, drop = F]
-  #lm = lm(Moisture ~ poly(Protein, 1), data=train_data)
   lm = lm(Fat~.,data=data.frame(new_data))
   step = stepAIC(lm, direction="both")
   return(step)
@@ -61,7 +60,7 @@ new_data =  data[, ! names(data) %in% remove, drop = F]
 covariates=scale(new_data[,1:100])
 response=scale(new_data[,101])
 model0=glmnet(as.matrix(covariates),response, alpha=1,family="gaussian")
-#plot(model0, xvar="lambda", label=TRUE)
+plot(model0, xvar="lambda", label=TRUE)
 
 #7
 model=cv.glmnet(as.matrix(covariates),response, alpha=1,family="gaussian")

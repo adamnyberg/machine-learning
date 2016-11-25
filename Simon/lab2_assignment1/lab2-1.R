@@ -3,29 +3,14 @@ set.seed(12345)
 data = swiss
 nFolds = 5
 
-#Dependent variable
-y = data$Fertility
-
-#Independent variable
-x1 = data$Agriculture
-x2 = data$Examination
-x3 = data$Education
-x4 = data$Catholic
-x5 = data$Infant.Mortality
-
 linear_regression = function(X,Y){
   X = cbind(1,X)
   Beta = solve((t(X) %*% as.matrix(X))) %*% (t(X)%*%Y)
+  print(Beta)
   return(Beta)
 }
-l = linear_regression(swiss[-1],y)
-predict_cv = function(model, testData){
 
-#  to_be_removed = colnames(trainData)
-#  to_be_removed = to_be_removed[! to_be_removed %in% subset[,col], drop = F] 
- # subset_data = trainData[, ! names(trainData) %in% to_be_removed, drop = F]
-  
-  
+predict_cv = function(model, testData){
   lin_fnc=model[,1]
   to_be_removed = colnames(testData[,-1])
   to_be_removed = to_be_removed[! to_be_removed %in% names(lin_fnc[-1]), drop = F]
@@ -42,14 +27,12 @@ predict_cv = function(model, testData){
   
 }
 
+#Calculate 
 cv = function(){
-  #Randomly shuffle the data
+  #Shuffle data
   rdata=data[sample(nrow(data)),]
-  #Create 5 equally size folds
+  #Create 5 folds
   folds <- cut(seq(1,nrow(rdata)),breaks=5,labels=FALSE)
-  
-  #Perform 5 fold cross validation
-
   
   best_cv = Inf
   best_subset = "NULL"
@@ -83,18 +66,12 @@ cv = function(){
 
     }
   }
+  #Display the best CV and subset
   print(best_cv)
   print(best_subset)
-  print(feature_list)
-  print(cv_list)
-  plot(feature_list,cv_list)
-  #Segement your data by fold using the which() function 
+  
+  #Plot all CV scores against # of features
+  plot(feature_list,cv_list, xlab = "# of features", ylab="CV")
 
-  #print(testData)
-  
-  #return(trainData)
-  #print(cv)
-  #print(model)
-  
 }
 cv()
