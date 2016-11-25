@@ -17,7 +17,7 @@ thetasMax = thetas[which(loglike==max(loglike))]
 
 # 2.3
 loglike6 = log(L(thetas, data$Length[1:6]))
-plot(thetas, loglike, col='blue', main="Log-likelihood")
+plot(thetas, loglike, col='blue', main="Log-x")
 par(new = TRUE)
 plot(thetas, loglike6, col='red', ylab = "", axes = FALSE)
 thetasMax6 = thetas[which(loglike6==max(loglike6))]
@@ -28,7 +28,7 @@ bl = function(theta, X) {
 }
 
 bayesian = log(bl(thetas, data$Length))
-plot(thetas, bayesian, col='green')
+plot(thetas, bayesian, col='green', type = "o")
 thetaMaxB = thetas[which(bayesian==max(bayesian))]
 
 # 2.5

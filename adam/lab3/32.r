@@ -47,18 +47,15 @@ gini_mis_train = mis_rate(table(train$good_bad, gini_fitted_train))
 
 #ASSIGNMENT 2.3
 
-tree_m = tree(good_bad~., data=train)
+tree_m = tree(good_bad~., data=train, split = c("deviance"))
 l = 15
 trainScore=rep(0,l)
 testScore=rep(0,l)
-trees = c()
 misRate = c()
 
 for(i in 2:l) {
-  prunedTree=prune.tree(tree_m,best=i) 
-  
+  prunedTree=prune.tree(tree_m, best=i)
   pred=predict(prunedTree, newdata=validation, type="tree")
-  trees[i] = pred
   trainScore[i]=deviance(prunedTree)
   testScore[i]=deviance(pred)
   
@@ -70,7 +67,10 @@ plot(2:l, trainScore[2:l], type="b", col="red", ylim=c(280,600), ylab = "Devianc
 points(2:l, testScore[2:l], type="b", col="blue")
 legend("topright", lty=c(1,1,1), col=c("red", "blue"), legend=c("Train", "Test"))
 
-# I'd choose 4 
+# I'd choose 4
+optimal_tree = prune.tree(tree_m, best=4)
+plot(optimal_tree)
+text(optimal_tree)
 
 #ASSIGNMENT 2.4
 

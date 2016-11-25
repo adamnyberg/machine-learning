@@ -53,14 +53,23 @@ knearest = function(data, K, newData, const=0.5) {
 
 
 # 1.3-4
-pred1 = knearest(train, 1, test)
-pred5 = knearest(train, 5, test)
+# K=1
+pred1Test = knearest(train, 1, test)
+Conf1Test = table(pred1Test, test$Spam)
+Mis1Test = misclass(pred1Test, test$Spam)
 
-Conf1 = table(pred1, test$Spam)
-Mis1 = misclass(pred1, test$Spam)
+pred1Train = knearest(train, 1, train)
+Conf1Train = table(pred1Train, test$Spam)
+Mis1Train = misclass(pred1Train, test$Spam)
 
-Conf5 = table(pred5, test$Spam)
-Mis5 = misclass(pred5, test$Spam)
+# K=5
+pred5Test = knearest(train, 5, test)
+Conf5Test = table(pred5Test, test$Spam)
+Mis5Test = misclass(pred5Test, test$Spam)
+
+pred5Train = knearest(train, 5, train)
+Conf5Train = table(pred5Train, test$Spam)
+Mis5Train = misclass(pred5Train, test$Spam)
 
 # 1.5
 kknnPred5 = kknn(Spam~., train, test, 5)
