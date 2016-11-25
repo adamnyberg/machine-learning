@@ -20,8 +20,8 @@ test = holder[-id,]
 ### Part 2 ###
 
 # Deviance model
-# Misclass on train: 0.2105
-# Misclass on test: 0.284
+  # Misclass on train: 0.2105
+  # Misclass on test: 0.284
 model = tree(good_bad~., data=train,  split = c("deviance"))
 
 # Gini model
@@ -31,19 +31,15 @@ model = tree(good_bad~., data=train,  split = c("deviance"))
 
 print(summary(model))
 plot(model)
-
-test_fit=predict(model, newdata=test, type="class") 
-t = table(test$good_bad,test_fit)
+text(model)
+  
+test_fit=predict(model, newdata=train, type="class") 
+t = table(train$good_bad,test_fit)
 misclass_rate = 1 - sum(diag(t))/sum(t)
 
 # Deviance model is the winner.
 
 ### Part 3 ###
-cv.model = cv.tree(model)
-#plot(cv.model)
-
-plot(cv.model$size, cv.model$dev, type="b", col="red")
-
 train_score = rep(0,15) 
 validation_score = rep(0,15)
 for(i in 2:15) { 
@@ -55,19 +51,20 @@ for(i in 2:15) {
 
 plot(2:15, train_score[2:15], type="b", col="red", ylim=c(280,600), xlab="size", ylab="deviance")
 points(2:15, validation_score[2:15], type="b", col="blue")
+title("Deviance of pruned trees")
 
 final_tree=prune.tree(model, best=4) # seen from graph 
-Yfit=predict(final_tree, newdata=validation, type="class") 
-f_tree_table = table(validation$good_bad,Yfit)
+Yfit=predict(final_tree, newdata=test, type="class") 
+f_tree_table = table(test$good_bad,Yfit)
 f_tree_misclass = 1 - sum(diag(f_tree_table))/sum(f_tree_table)
 
 ### Part 4 ###
 bayes_model=naiveBayes(good_bad~., data=train, type=c("class"))
-Yfit=predict(bayes_model, newdata=validation) 
-bayes_table = table(Yfit,validation$good_bad)
+Yfit=predict(bayes_model, newdata=train) 
+bayes_table = table(Yfit,train$good_bad)
 bayes_misclass = 1 - sum(diag(bayes_table))/sum(bayes_table)
 
-### Part 5 ###
+  ### Part 5 ###
 bayes_model=naiveBayes(good_bad~., data=train, type=c("class"))
 
 # Test prediction
@@ -76,7 +73,7 @@ Yfit[,1] = Yfit[,1] * 10
 Yfit2 = replace(Yfit, Yfit[,1] > Yfit[,2], "bad")
 Yfit2 = replace(Yfit2, Yfit[,1] <= Yfit[,2], "good")
 bayes_tab = table(Yfit2[,1],test$good_bad)
-bayes_misclass = 1 - sum(diag(bayes_table))/sum(bayes_table)
+bayes_misclass = 1 - sum(diag(bayes_tab))/sum(bayes_tab)
 
 # Training prediciton
 Yfit=predict(bayes_model, newdata=train, type=c("raw"))
@@ -84,4 +81,4 @@ Yfit[,1] = Yfit[,1] * 10
 Yfit2 = replace(Yfit, Yfit[,1] > Yfit[,2], "bad")
 Yfit2 = replace(Yfit2, Yfit[,1] <= Yfit[,2], "good")
 bayes_tab = table(Yfit2[,1],train$good_bad)
-bayes_misclass = 1 - sum(diag(bayes_table))/sum(bayes_table)
+bayes_misclass = 1 - sum(diag(bayes_tab))/sum(bayes_tab)
