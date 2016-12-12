@@ -33,7 +33,7 @@ cv = function(){
   rdata=data[sample(nrow(data)),]
   #Create 5 folds
   folds <- cut(seq(1,nrow(rdata)),breaks=5,labels=FALSE)
-  
+  print(folds)
   best_cv = Inf
   best_subset = "NULL"
   cv_list=c()
@@ -67,8 +67,8 @@ cv = function(){
     }
   }
   #Display the best CV and subset
-  print(best_cv)
-  print(best_subset)
+  #print(best_cv)
+  #print(best_subset)
   
   #Plot all CV scores against # of features
   plot(feature_list,cv_list, xlab = "# of features", ylab="CV")

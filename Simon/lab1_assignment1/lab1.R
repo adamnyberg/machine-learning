@@ -14,11 +14,6 @@ d_func=function(X,Y){
 }
 
 knearest=function(data,K,newdata){
-  #i=test, j=train
-  #i test hitta K närmasta train
-  #K min i varje kolumn
-  #return antal spam / K
-
   dmat = d_func(data,newdata)
   result = c()
   
@@ -81,8 +76,6 @@ plot_ROC=function(pred_prob, pred2){
     FPR2[index] = conf_mat2[1,2]/sum(conf_mat2[1,])
     TPR2[index] = conf_mat2[2,2]/sum(conf_mat2[2,])
   }
-  #print(TPR)
-  #print(FPR)
   plot(FPR,TPR, type="l",main="ROC curve of our K-NN", col = "red")
   lines(FPR2,TPR2, col="blue")
 }
