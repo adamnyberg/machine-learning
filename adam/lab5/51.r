@@ -6,7 +6,7 @@ set.seed(1234567890)
 
 stations = read.csv("lab5/stations.csv")
 temps = read.csv("lab5/temps50k.csv")
-st = merge(stations, temps, by="station_number")[sample(1:50000, 2000),]
+st = merge(stations, temps, by="station_number")[sample(1:50000, 50000),]
 
 n=dim(st)[1]
 id=sample(1:n, floor(n*0.75)) 
@@ -53,7 +53,7 @@ calc_temp = function(dist, Y) {
 
 h_distance <- 60000 # These three values are up to the students
 h_date <- 40
-h_time <- 2*3600
+h_time <- 3*3600
 
 c_distance = 0.1
 c_date = 1
@@ -62,7 +62,7 @@ c_time = 0.1
 a = 58.413497  # The point to predict (up to the students)
 b = 15.582597
 point = c(a, b)
-date = "2013-04-20" # The date to predict (up to the students)
+date = "2013-02-02" # The date to predict (up to the students)
 times = c("04:00:00", 
           "06:00:00",
           "08:00:00",
@@ -73,7 +73,7 @@ times = c("04:00:00",
           "18:00:00",
           "20:00:00",
           "22:00:00",
-          "24:00:00")
+          "23:00:00")
 temp = vector(length=length(times))
 # Students’ code here
 
@@ -85,7 +85,9 @@ predict_temps = function(point_, date_, hour_) {
   if (missing(hour_)) {
     for(i in 1:length(times)) {
       hour_dist = hour_distance(times[i], train$time)
+      
       sum_dist = c_distance*station_dist + c_date*date_dist + c_time*hour_dist
+      
       temps_[i] = calc_temp(sum_dist, train$air_temperature)
     }
     
@@ -102,7 +104,7 @@ predict_temps = function(point_, date_, hour_) {
 
 # Predict only one day
 pred_one_day = predict_temps(point, date)
-plot(1:length(pred_one_day), pred_one_day)
+plot(seq(4, 24, 2), pred_one_day, main="predicted temperatures for 2013-02-02", ylab="Temperature", xlab="Time of day")
 
 # train test
 
@@ -112,8 +114,8 @@ plot(1:length(pred_one_day), pred_one_day)
 #  Yhat[i] = predict_temps(c(test_row$latitude, test_row$longitud), test_row$date, test_row$time)
 #}
 
-plot(Yhat, test$air_temperature, ylim=range(-30,30), xlim=range(-30,30))
-abline(1,1)
+#plot(Yhat, test$air_temperature, ylim=range(-30,30), xlim=range(-30,30), ylab="Real temperature", xlab="Predicted temperature")
+#abline(1,1)
 
 
 plot_h_values = function() {

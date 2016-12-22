@@ -24,9 +24,8 @@ plot(res$x[,1], res$x[,2], ylim=c(-5,15), main="2.1", xlab="PC1", ylab="PC2")
 
 # ASSIGNMENT 2.2
 U = res$rotation
-plot(U[,2], main="2.2 Traceplot PCA", xlab="index", ylab="", col="red")
-points(U[,1], col="blue")
-legend("top", pch=c(1,1), col=c("red", "blue"), legend = c("PC2", "PC1"), xpd = TRUE)
+plot(U[,1], main="2.2 Traceplot PC1", xlab="index", ylab="", col="blue")
+plot(U[,2], main="2.2 Traceplot PC2", xlab="index", ylab="", col="red")
 
 # ASSIGNMENT 2.3
 a <- fastICA(data1, 2, alg.typ="parallel", fun="logcosh", alpha=1, method="R", row.norm=FALSE, maxit=200, tol=0.0001, verbose=TRUE)

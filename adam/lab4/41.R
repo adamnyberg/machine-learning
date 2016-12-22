@@ -22,6 +22,8 @@ tree_m_cv <- cv.tree(object=tree_m)
 k = tree_m_cv$size[which(tree_m_cv$dev==min(tree_m_cv$dev))]
 tree_m_pruned <- prune.tree(tree_m, best=k)
 
+plot(tree_m_cv)
+
 plot(tree_m_pruned, main="1.2 Tree model")
 text(tree_m_pruned, main="1.2 Tree model")
 
